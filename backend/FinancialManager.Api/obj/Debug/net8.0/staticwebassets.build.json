@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "mv/TD1k2lQctsq8HObr9m+IF9gREltbXQBdEw9EVcTE=",
+  "Source": "FinancialManager.Api",
+  "BasePath": "_content/FinancialManager.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

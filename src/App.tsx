@@ -1,23 +1,29 @@
-import { Box, Flex, Grid, GridItem, HStack, Show } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
-import GameGrid from "./components/GameGrid";
-import GenreList from "./components/GenreList";
+import Dashboard from "./components/Dashboard";
+import AccountsList from "./components/AccountsList";
 import { useState } from "react";
-import { Genre } from "./hooks/useGenres";
-import PlatformSelector from "./components/PlatformSelector";
-import { Platform } from "./hooks/useGames";
+import { AccountType } from "./types/Account";
+import AccountTypeSelector from "./components/AccountTypeSelector";
 import SortSelector from "./components/SortSelector";
-import GameHeading from './components/GameHeading';
+import DashboardHeading from './components/DashboardHeading';
 
+export interface FinancialQuery {
+  accountType: AccountType | null;
+  sortOrder: string;
+  searchText: string;
+}
+
+// Keep for backward compatibility with existing components
 export interface GameQuery {
-  genre: Genre | null;
-  platform: Platform | null;
+  genre: any;
+  platform: any; 
   sortOrder: string;
   searchText: string;
 }
 
 function App() {
-  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
+  const [financialQuery, setFinancialQuery] = useState<FinancialQuery>({} as FinancialQuery);
 
   return (
     <Grid
@@ -27,41 +33,41 @@ function App() {
       }}
       templateColumns={{
         base: "1fr",
-        lg: "200px 1fr",
+        lg: "250px 1fr",
       }}
     >
       <GridItem area="nav">
-        <NavBar onSearch={(searchText) => setGameQuery({...gameQuery, searchText})}/>
+        <NavBar onSearch={(searchText) => setFinancialQuery({...financialQuery, searchText})}/>
       </GridItem>
       <Show above="lg">
         <GridItem area="aside" paddingX={5}>
-          <GenreList
-            selectedGenre={gameQuery.genre}
-            onSelectGenre={(genre) => setGameQuery({ ...gameQuery, genre })}
+          <AccountsList
+            selectedAccountType={financialQuery.accountType}
+            onSelectAccountType={(accountType) => setFinancialQuery({ ...financialQuery, accountType })}
           />
         </GridItem>
       </Show>
       <GridItem area="main">
         <Box paddingLeft={2} >
-          <GameHeading gameQuery={gameQuery} />
+          <DashboardHeading financialQuery={financialQuery} />
           <Flex marginBottom={5}>
             <Box marginRight={5}>
-              <PlatformSelector
-                selectedPlatform={gameQuery.platform}
-                onSelectPlatform={(platform) =>
-                  setGameQuery({ ...gameQuery, platform })
+              <AccountTypeSelector
+                selectedAccountType={financialQuery.accountType}
+                onSelectAccountType={(accountType) =>
+                  setFinancialQuery({ ...financialQuery, accountType })
                 }
               />
             </Box>
             <SortSelector
               onSelectSortOrder={(sortOrder) =>
-                setGameQuery({ ...gameQuery, sortOrder })
+                setFinancialQuery({ ...financialQuery, sortOrder })
               }
-              sortOrder={gameQuery.sortOrder}
+              sortOrder={financialQuery.sortOrder}
             />
           </Flex>
         </Box>
-        <GameGrid gameQuery={gameQuery} />
+        <Dashboard financialQuery={financialQuery} />
       </GridItem>
     </Grid>
   );
