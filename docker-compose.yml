@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  financial-manager-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=FinancialManagerDb;User=sa;Password=YourPassword123!;TrustServerCertificate=true
+    depends_on:
+      - db
+    networks:
+      - financial-network
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourPassword123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - financial-network
+
+volumes:
+  sqlserver_data:
+
+networks:
+  financial-network:
+    driver: bridge

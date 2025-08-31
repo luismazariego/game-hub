@@ -19,6 +19,14 @@ dist-ssr
 .DS_Store
 *.suo
 *.ntvs*
-*.njsproj
+*.njsproj*
 *.sln
 *.sw?
+
+# .NET
+backend/**/bin/
+backend/**/obj/
+backend/**/*.user
+backend/**/*.suo
+backend/**/*.userosscache
+backend/**/*.sln.docstates

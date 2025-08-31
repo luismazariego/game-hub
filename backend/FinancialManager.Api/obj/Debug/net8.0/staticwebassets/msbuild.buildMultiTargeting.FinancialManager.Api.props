@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/FinancialManager.Api.props" />
-</Project>
