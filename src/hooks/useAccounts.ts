@@ -1,6 +1,8 @@
-import accounts from '../data/accounts';
-import { Account } from '../types/Account';
+import { useFinancialContext } from '../contexts/FinancialContext';
 
-const useAccounts = () => ({data: accounts, isLoading: false, error: null});
+const useAccounts = () => {
+  const { accounts } = useFinancialContext();
+  return { data: accounts, isLoading: false, error: null };
+};
 
 export default useAccounts;
