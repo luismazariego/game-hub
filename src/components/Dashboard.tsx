@@ -1,10 +1,12 @@
-import { Text, SimpleGrid, Box, Stat, StatLabel, StatNumber, StatHelpText, Heading, VStack, HStack } from "@chakra-ui/react";
+import { Text, SimpleGrid, Box, Stat, StatLabel, StatNumber, StatHelpText, Heading, VStack, HStack, Button, useDisclosure } from "@chakra-ui/react";
 import useAccounts from "../hooks/useAccounts";
 import useCreditCards from "../hooks/useCreditCards";
 import AccountCard from "./AccountCard";
 import CreditCardCard from "./CreditCardCard";
 import AccountCardSkeleton from "./AccountCardSkeleton";
 import AccountCardContainer from "./AccountCardContainer";
+import AddAccountForm from "./AddAccountForm";
+import AddCreditCardForm from "./AddCreditCardForm";
 import { FinancialQuery } from "../App";
 
 interface Props {
@@ -15,6 +17,19 @@ const Dashboard = ({ financialQuery }: Props) => {
   const { error: accountsError, data: accounts, isLoading: accountsLoading } = useAccounts();
   const { error: creditCardsError, data: creditCards, isLoading: creditCardsLoading } = useCreditCards();
   const skeletons = [1, 2, 3, 4];
+
+  // Modal controls
+  const { 
+    isOpen: isAddAccountOpen, 
+    onOpen: onAddAccountOpen, 
+    onClose: onAddAccountClose 
+  } = useDisclosure();
+  
+  const { 
+    isOpen: isAddCreditCardOpen, 
+    onOpen: onAddCreditCardOpen, 
+    onClose: onAddCreditCardClose 
+  } = useDisclosure();
 
   if(accountsError) return <Text>{accountsError}</Text>;
   if(creditCardsError) return <Text>{creditCardsError}</Text>;
@@ -69,7 +84,17 @@ const Dashboard = ({ financialQuery }: Props) => {
       {/* Assets Section */}
       <VStack spacing={6} align="stretch">
         <Box>
-          <Heading size="lg" marginBottom={4} paddingX={4}>Assets</Heading>
+          <HStack justifyContent="space-between" alignItems="center" marginBottom={4} paddingX={4}>
+            <Heading size="lg">Assets</Heading>
+            <Button
+              colorScheme="green"
+              variant="outline"
+              size="sm"
+              onClick={onAddAccountOpen}
+            >
+              + Add Account
+            </Button>
+          </HStack>
           <SimpleGrid
             columns={{ sm: 1, md: 2, lg: 3 }}
             padding={4}
@@ -91,7 +116,17 @@ const Dashboard = ({ financialQuery }: Props) => {
 
         {/* Debts Section */}
         <Box>
-          <Heading size="lg" marginBottom={4} paddingX={4}>Debts</Heading>
+          <HStack justifyContent="space-between" alignItems="center" marginBottom={4} paddingX={4}>
+            <Heading size="lg">Debts</Heading>
+            <Button
+              colorScheme="red"
+              variant="outline"
+              size="sm"
+              onClick={onAddCreditCardOpen}
+            >
+              + Add Credit Card
+            </Button>
+          </HStack>
           <SimpleGrid
             columns={{ sm: 1, md: 2, lg: 3 }}
             padding={4}
@@ -114,6 +149,10 @@ const Dashboard = ({ financialQuery }: Props) => {
           </SimpleGrid>
         </Box>
       </VStack>
+
+      {/* Modals */}
+      <AddAccountForm isOpen={isAddAccountOpen} onClose={onAddAccountClose} />
+      <AddCreditCardForm isOpen={isAddCreditCardOpen} onClose={onAddCreditCardClose} />
     </Box>
   );
 };

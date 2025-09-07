@@ -1,6 +1,8 @@
-import creditCards from '../data/creditCards';
-import { CreditCard } from '../types/Account';
+import { useFinancialContext } from '../contexts/FinancialContext';
 
-const useCreditCards = () => ({data: creditCards, isLoading: false, error: null});
+const useCreditCards = () => {
+  const { creditCards } = useFinancialContext();
+  return { data: creditCards, isLoading: false, error: null };
+};
 
 export default useCreditCards;
